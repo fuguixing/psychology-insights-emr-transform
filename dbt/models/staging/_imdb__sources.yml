@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: imdb
+    description: Subsets of IMDb data, which are available for access to customers for personal and non-commercial use
+    tables:
+      - name: title_ratings
+        description: Table that contains the IMDb rating and votes information for titles
+        external:
+          location: "s3://<s3-bucket-name>/title_ratings/"
+          row_format: >
+            serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+            with serdeproperties (
+              'separatorChar'='\t'
+            )
+          table_properties: "('skip.header.line.count'='1')"
+        columns:
+          - name: tconst
+            data_type: string
+            description: alphanumeric unique identifier of the title
+            tests:
+              - unique
+              - not_null
+          - name: averagerating
+            data_type: float
+            description: weighted average of all the individual user ratings
+          - name: numvotes
+            data_type: int
+            description: number of votes the title has received

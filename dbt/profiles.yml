@@ -1,0 +1,23 @@
+emrtransform:
+  outputs:
+
+    dev:
+      type: spark
+      method: thrift
+      host: 127.0.0.1
+      port: 10000
+      user: dbt
+      schema: imdb
+      connect_retries: 5
+      connect_timeout: 60
+      retry_all: true
+
+    prod:
+      type: spark
+      method: thrift
+      schema: dbt_demo_output
+      host: <IP_ADDRESS_OF_THE_EMR_MASTER_NODE>
+      port: 10001
+      user: dbt
+
+  target: dev
